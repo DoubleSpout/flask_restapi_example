@@ -1,0 +1,69 @@
+{% include 'inc/head.html' %}
+<body>
+{% include 'inc/nav.html' %}
+<!--VIP内容结束-->
+<div class="wrap">
+	<div class="vip_cont">
+    	<!--商品列表页左边内容开始-->
+        <div class="viplist_l">
+			{% include 'inc/user_vip.html' %}
+            {% include 'inc/vzone.html' %}
+            {% include 'inc/qa_left.html' %}	
+        </div>
+        <!--商品列表页左边内容结束-->
+        <!--商品列表页右边内容开始-->
+        <div class="viplist_r">
+        	<h2><a href="/goods/list">积分商城</a>><span>商品兑换</span></h2>
+            <div class="comm_contbox">
+            	<!---商品内容开始-->
+            	<div class="comm_detbox">
+                	<div class="comm_det_img"><img id="goods_detail_picture" src="" width="155" height="155"></div>
+                    <div class="comm_det_font">
+                        <h3 id="goods_detail_title"></h3>
+                        <span class="h">所需积分价格：<font class="cho_red" id="goods_detail_price"></font> 积分</span>
+                        <span class="h">库存：<font id="goods_detail_inventory">{{ goods['Inventory'] }}</font></span>
+                        <span class="h">已兑换人数：<font id="goods_detail_has_exchange">{{ goods['countall'] }}</font></span>
+			{% if uid != 0 %}
+				{% if goods['content'] != '0' %}
+				    <span class="h">您的礼品卡号：<font id="" class="cho_red">{{ goods['content'] }}</font></span>
+				{% else %}
+				    <a class="icon go_money_1 no_inventory" href="javascript:;" title="库存不足" id="no_inventory" style="display:none;">库存不足</a>
+				    <a class="icon go_money_1" href="javascript:;" title="立即兑换" id="sub_exchange" style="display:none;">立即兑换</a>
+				{% endif %}
+			{% else%}
+				<a class="icon go_money_1" href="javascript:;" name="minilogin">立即兑换</a>
+			{% endif%}			
+                    </div>
+                </div>
+                <!--商品内容结束-->
+                <!--商品文字信息开始-->
+                	<h3 class="com_det_ftit">商品信息</h3>
+                    <div class="det_font">
+                    	<p>
+                        	<strong>商品名称</strong>：<font id="goods_detail_title2"></font><br>
+                            <strong>规格</strong>：<p id="goods_detail_specification"></p>
+                            <strong>提示</strong>：<p id="goods_detail_tips"></p>
+                        </p>
+                    </div>
+                    <h4 class="det_pro">
+                    	<span>注意事项：<br></span>
+                        请您在购买时认真填写您的联系方式，虚拟物品将及时发货，实物奖品我们的工作人员会在20个工作日内发货，国家法定假期除外！
+                    </h4>
+                <!--商品文字信息结束-->
+            </div>
+            <!---玩家在玩的游戏开始-->
+            {% include 'inc/new_games.html' %}
+            <!--玩家在玩的游戏结束-->
+        </div>
+        
+        <!--商品列表页右边内容结束-->
+        <div class="clear"></div>
+    </div>
+</div>
+<!--VIP内容结束-->
+<!--网站页脚开始-->
+{% include 'inc/foot.html' %}
+
+
+</body>
+</html>
