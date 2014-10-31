@@ -17,6 +17,7 @@ from restapi import app
 from restapi import config
 from restapi.models.UsersModel import PlatUser
 from restapi.models.faceModel import PlatUserFace
+from restapi.models.hobbyModel import PlatUserHobby
 from restapi.bussiness.LoggerBl import log
 from restapi.models.dbModel import db
 
@@ -43,14 +44,20 @@ class UsersBl(object):
         user.Faces.append(userFace)
         user.Faces.append(userFace2)
         user.Faces.append(userFace3)
+        userHobby = PlatUserHobby(user.Id, '游泳')
+        userHobby2 = PlatUserHobby(user.Id, '骑车')
+        user.Hobbies.append(userHobby)
+        user.Hobbies.append(userHobby2)
         db.session.commit()
         user.sqlData = PlatUser.query.options(undefer('UserTips')).filter_by(Id=user.Id).all()
         FaceList = userFace.dumpToList(user.sqlData[0].Faces)
-        return True, [user.dumpToList(),FaceList]
+        HobbyList = userHobby.dumpToList(user.sqlData[0].Hobbies)
+        return True, [user.dumpToList(), FaceList, HobbyList]
 
     def getUserById(self):
         user = PlatUser()
         userFace = PlatUserFace()
+        userHobby = PlatUserHobby()
         #如果没有找到用户
         user.sqlData = PlatUser\
             .query\
@@ -61,6 +68,21 @@ class UsersBl(object):
         #找到用户
         userObj = user.dumpToList(user.sqlData)
         faceList = userFace.dumpToList(user.sqlData.Faces)
+        hobbyList =userHobby.dumpToList(user.sqlData.Hobbies)
         userObj['Faces'] = faceList
+        userObj['Hobbies'] = hobbyList
         return True, userObj
+
+    def getUserByHobbyId(self):
+        user = PlatUser()
+        userFace = PlatUserFace()
+        userHobby = PlatUserHobby()
+        hobbyId = self.hobbyId
+        userHobby.sqlData = PlatUserHobby.query.filter_by(Id=hobbyId).first()
+        if not userHobby.sqlData:
+            return False, 'not hobby'
+        hobbyObj = userHobby.dumpToList()
+        userList = user.dumpToList(userHobby.sqlData.Plat_User)
+        return True, [hobbyObj, userList]
+
 

@@ -33,9 +33,13 @@ regParser = reqparse.RequestParser()
 regParser.add_argument('username', type=str, required=True, location='form')
 regParser.add_argument('password', type=str, required=True, location='form')
 
-#reg param
+#info param
 infoParser = reqparse.RequestParser()
 infoParser.add_argument('user_id', type=int, required=True, dest='userId')
+
+#hobby param
+hobbyParser = reqparse.RequestParser()
+hobbyParser.add_argument('hobby_id', type=int, required=True, dest='hobbyId')
 
 
 class UserLogin(Resource):
@@ -85,3 +89,17 @@ class UserInfo(Resource):
     def post(self, user_id):
         # modify user info
         pass
+
+
+class getHobbyUser(Resource):
+
+    @Utils.checkSign
+    @Utils.checkToken
+    def get(self):
+        #check param
+        args = hobbyParser.parse_args()
+        user = UsersBl()
+        user.hobbyId = args['hobbyId']
+        #do userObj
+        ok, userObjList = user.getUserByHobbyId()
+        return Utils.genResponse(ok, userObjList)
