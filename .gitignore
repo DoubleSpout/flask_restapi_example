@@ -1,3 +1,4 @@
 .pyc
 vipsystem/logs
 .idea
+*.pyc
